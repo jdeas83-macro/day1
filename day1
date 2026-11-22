@@ -1,0 +1,941 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0f172a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Day 1"><title>Cardio · Day 1</title><link rel="stylesheet" href="css/style.css"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" href="icons/logo.svg"></head><body><main class="app"><header><div class="brand"><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</div><h1>Cardio</h1><p class="muted">Small steps. Stronger every day.</p></header><section class="card"><h2>Today's cardio</h2><div class="stat-pair"><div><strong id="cardioCalories">0</strong><span>kcal burned</span></div><div><strong id="cardioMinutes">0</strong><span>minutes</span></div></div><p class="muted helper">Calories are recorded from your watch or machine. They do not increase your food calorie allowance.</p></section><form class="card" id="cardioForm"><h2 id="cardioFormTitle">Log an activity</h2><label for="cardioDate">Date</label><input id="cardioDate" type="date" required><label for="activity">Activity</label><select id="activity"><option>Walking</option><option>Running</option><option>Cycling</option><option>Rowing</option><option>Swimming</option><option>Elliptical</option><option>Other</option></select><div class="two-col"><div><label for="duration">Minutes</label><input id="duration" type="number" min="0.1" step="0.1" required inputmode="decimal"></div><div><label for="burned">Calories burned (kcal)</label><input id="burned" type="number" min="0" step="1" required inputmode="numeric"></div></div><label for="distance">Distance in km (optional)</label><input id="distance" type="number" min="0" step="0.01" inputmode="decimal"><label for="cardioNotes">Notes (optional)</label><textarea id="cardioNotes" maxlength="2000"></textarea><button class="primary" id="saveCardio" type="submit">Save cardio</button><button class="secondary" id="cancelCardio" type="button" hidden>Cancel edit</button><p id="cardioStatus" role="status"></p></form><section class="card"><h2>Activity history</h2><div id="cardioHistory"></div></section></main><nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav><script src="js/training-store.js"></script><script src="js/cardio.js"></script><script src="js/app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Food Library | Day 1</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+        <link rel="manifest" href="manifest.json">
+
+        <link
+    rel="apple-touch-icon"
+    href="icons/apple-touch-icon.png"
+>
+
+<meta name="theme-color" content="#0f172a">
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Day 1"
+>
+    >
+<link rel="icon" href="icons/logo.svg">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ==========================
+         PAGE HEADER
+    =========================== -->
+
+    <header>
+<div class="brand"><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</div>
+        <h1>📚 Food Library</h1>
+
+        <p class="page-description">
+            Choose a food to add to today's log.
+        </p>
+    </header>
+
+
+    <!-- ==========================
+         SEARCH
+    =========================== -->
+
+    <section class="card">
+
+        <label
+            class="input-label"
+            for="foodSearch"
+        >
+            Search foods
+        </label>
+
+        <input
+            type="search"
+            id="foodSearch"
+            placeholder="Search by food name..."
+            autocomplete="off"
+        >
+
+    </section>
+
+
+    <!-- ==========================
+         FOOD LIST
+    =========================== -->
+
+    <section class="card">
+
+        <div class="section-heading">
+
+            <h2>Saved Foods</h2>
+
+            <span id="foodCount">
+                0 foods
+            </span>
+
+        </div>
+
+        <div id="foodLibrary">
+
+            <p class="empty">
+                Loading foods...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================
+         ADD CUSTOM FOOD
+    =========================== -->
+
+    <section class="card">
+
+        <h2>Add a Custom Food</h2>
+
+        <form id="addFoodForm">
+
+            <div class="form-group">
+
+                <label for="foodName">
+                    Food name
+                </label>
+
+                <input
+                    type="text"
+                    id="foodName"
+                    placeholder="Example: Greek yoghurt"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="foodServing">
+                    Serving size
+                </label>
+
+                <input
+                    type="text"
+                    id="foodServing"
+                    placeholder="Example: 100 g"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="foodCalories">
+                        Calories
+                    </label>
+
+                    <input
+                        type="number"
+                        id="foodCalories"
+                        min="0"
+                        step="0.1"
+                        placeholder="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="foodProtein">
+                        Protein (g)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="foodProtein"
+                        min="0"
+                        step="0.1"
+                        placeholder="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="foodCarbs">
+                        Carbs (g)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="foodCarbs"
+                        min="0"
+                        step="0.1"
+                        placeholder="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="foodFat">
+                        Fat (g)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="foodFat"
+                        min="0"
+                        step="0.1"
+                        placeholder="0"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Save Food
+            </button>
+
+            <p
+                id="formMessage"
+                class="form-message"
+                aria-live="polite"
+            ></p>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- ==========================
+     BOTTOM NAVIGATION
+========================== -->
+
+<nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav>
+
+
+<script src="js/storage.js"></script>
+<script src="js/foods.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>History | Day 1</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+        <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#0f172a">
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Day 1"
+><link
+    rel="apple-touch-icon"
+    href="icons/apple-touch-icon.png"
+>
+    >
+<link rel="icon" href="icons/logo.svg">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ==========================
+         PAGE HEADER
+    =========================== -->
+
+    <header>
+<div class="brand"><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</div>
+        <h1>📈 History</h1>
+
+        <p class="page-description">
+            Review your previous food logs and daily totals.
+        </p>
+    </header>
+
+
+    <!-- ==========================
+         HISTORY SUMMARY
+    =========================== -->
+
+    <section class="card">
+
+        <div class="section-heading">
+
+            <h2>Logged Days</h2>
+
+            <span id="historyCount">
+                0 days
+            </span>
+
+        </div>
+
+        <div id="historyList">
+
+            <p class="empty">
+                Loading history...
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ==========================
+     BOTTOM NAVIGATION
+========================== -->
+
+<nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav>
+
+
+<script src="js/storage.js"></script>
+<script src="js/history.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Day 1</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+
+    <meta name="theme-color" content="#0f172a">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="apple-mobile-web-app-title" content="Day 1">
+
+<link rel="icon" href="icons/logo.svg">
+</head>
+
+<body>
+
+    <!-- ==========================
+         INSTALL APP
+    ========================== -->
+
+    <section
+        id="installSection"
+        class="install-section"
+        hidden>
+
+        <div class="install-content">
+
+            <div>
+
+                <h2>Install Day 1</h2>
+
+                <p>
+                    Add Day 1 to this device for faster access and offline use.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                id="installAppButton"
+                class="install-button">
+
+                Install App
+
+            </button>
+
+        </div>
+
+        <p
+            id="installMessage"
+            class="install-message"
+            aria-live="polite"></p>
+
+    </section>
+
+    <div class="app">
+
+        <!-- HEADER -->
+
+        <header>
+
+            <h1><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</h1>
+
+            <p id="todayDate">
+                Loading date...
+            </p>
+
+        </header>
+
+        <!-- DAILY TOTALS -->
+
+        <section class="card">
+
+            <h2>Today's Progress</h2>
+
+            <div class="macro">
+
+                <div class="label">
+
+                    <span>Calories</span>
+
+                    <span id="caloriesText">
+                        0 / 2400
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        id="caloriesBar"
+                        class="fill calories"></div>
+
+                </div>
+
+            </div>
+
+            <div class="macro">
+
+                <div class="label">
+
+                    <span>Protein</span>
+
+                    <span id="proteinText">
+                        0 / 180g
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        id="proteinBar"
+                        class="fill protein"></div>
+
+                </div>
+
+            </div>
+
+            <div class="macro">
+
+                <div class="label">
+
+                    <span>Carbs</span>
+
+                    <span id="carbsText">
+                        0 / 220g
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        id="carbsBar"
+                        class="fill carbs"></div>
+
+                </div>
+
+            </div>
+
+            <div class="macro">
+
+                <div class="label">
+
+                    <span>Fat</span>
+
+                    <span id="fatText">
+                        0 / 70g
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        id="fatBar"
+                        class="fill fat"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- TODAY'S FOOD -->
+
+        <section class="card">
+
+            <h2>Today's Food</h2>
+
+            <div id="foodLog">
+
+                <p class="empty">
+
+                    No food logged today.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav>
+
+    <script src="./js/storage.js"></script>
+    <script src="./js/dashboard.js"></script>
+    <script src="./js/app.js"></script>
+
+</body>
+
+</html>
+{
+  "name": "Day 1",
+  "short_name": "Day 1",
+  "description": "Small steps. Stronger every day. Nutrition, workouts and cardio.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "lang": "en-AU",
+  "categories": [
+    "health",
+    "fitness",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+DAY 1 — QUICK START
+Small steps. Stronger every day.
+
+WHAT IS INCLUDED
+• Existing nutrition dashboard, food library, food history and settings.
+• Workouts: Bench press, squat and deadlift days, six exercises each.
+• Focus lift progress: latest top set, personal best and dated session results.
+• Separate weight (kg) and reps for every set, previous results, notes and date.
+• Automatic workout drafts and saved session history. Blank sets are skipped.
+• Cardio: activity, minutes, calories burned, optional distance and notes.
+• Cardio history with edit/delete and today’s calories/minutes totals.
+• Dark navy background, orange sunrise/1 logo and matching phone icons.
+• Offline cache for app files after the first successful online load.
+
+1. OPEN IN VS CODE
+Extract this ZIP first. Open the Day1 folder in VS Code (File > Open Folder).
+The folder you open should contain index.html alongside css, js and icons.
+Use your Live Server extension to open index.html. No terminal commands,
+build process, package installation or account keys are needed.
+Do not open the ZIP itself or double-click index.html to test storage/offline.
+
+2. UPDATE YOUR EXISTING GITHUB PROJECT
+Back up your current project before replacing files.
+Copy EVERYTHING INSIDE the Day1 folder into the root of your existing
+Day 1 GitHub repository, replacing matching files. Include the new workouts.html,
+cardio.html and new JavaScript files. Keep your existing repository metadata.
+Do not nest the Day1 folder inside the website root: index.html should stay
+in the same location as your original index.html.
+Commit and push the updated files to the branch already serving your site.
+Keep your current GitHub Pages repository/address to retain the same browser
+storage origin. Your GitHub repository does not need to be renamed to Day 1.
+If you use GitHub’s web upload, upload the extracted files/folders, NOT this ZIP.
+
+3. CHECK THE LIVE APP
+After the updated site is available, open its usual address while online.
+Close and reopen the app after the first visit so its new offline cache is active.
+Check Today/Food, Workouts, Cardio, History and Settings.
+Log a small test session, reopen the app and check it remains in history.
+To update a stale home-screen name/icon, remove the old shortcut and add
+Day 1 again from Safari’s Share menu. Check your existing data before doing so.
+Do not clear website data to refresh the icon.
+
+4. LOG A WORKOUT
+Choose Workout 1, 2 or 3 and a date. Enter kg and reps separately for each set.
+Use 0 kg for an unweighted movement. For dumbbells, enter weight per dumbbell;
+for barbells, enter the total bar weight. Be consistent when comparing sessions.
+Drafts are saved per training day as you type. Choose that day again to resume.
+Finish workout saves to history, clears that draft and updates lift progress.
+The top set is the heaviest set, with more reps breaking ties.
+Previously saved bench press, squat and deadlift sets count automatically.
+Any older Push, Pull or Legs draft is available in the workout selector.
+You can save an incomplete session by leaving unused sets completely blank.
+Each started set needs both weight and reps. Delete test sessions in history.
+Workouts are not calorie estimates. Cardio is tracked separately.
+
+5. LOG CARDIO
+Choose activity and date, then enter minutes and calories from your watch or
+machine. Calories are manual records, not app-generated estimates. Optional
+fields: distance in kilometres and notes. Use 0 calories if unknown.
+Finish logging with Save cardio. Edit or delete entries in Activity history.
+Cardio calories do not automatically increase your food calorie target.
+
+DATA AND LIMITATIONS
+Data stays in this device/browser using local storage. GitHub hosts the app’s
+files; it does not store or sync your personal food/workout/cardio records.
+Another phone, computer, browser or Live Server address has separate data.
+The original macroTrack_* nutrition keys are preserved so the existing browser
+can continue using its saved data at the same website address. Do not clear
+browser/site data or use private browsing for records you want to keep.
+Habits beyond workouts/nutrition/cardio are not included in this release.
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | Day 1</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+        <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#0f172a">
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Day 1"
+>
+<link
+    rel="apple-touch-icon"
+    href="icons/apple-touch-icon.png"
+>
+    >
+<link rel="icon" href="icons/logo.svg">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ==========================
+         PAGE HEADER
+    =========================== -->
+
+    <header>
+<div class="brand"><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</div>
+        <h1>⚙ Settings</h1>
+
+        <p class="page-description">
+            Set your daily calorie and macronutrient goals.
+        </p>
+    </header>
+
+
+    <!-- ==========================
+         DAILY GOALS
+    =========================== -->
+
+    <section class="card">
+
+        <h2>Daily Goals</h2>
+
+        <form id="settingsForm">
+
+            <div class="form-group">
+
+                <label for="calorieGoal">
+                    Calories
+                </label>
+
+                <input
+                    type="number"
+                    id="calorieGoal"
+                    min="1"
+                    step="1"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="proteinGoal">
+                    Protein (g)
+                </label>
+
+                <input
+                    type="number"
+                    id="proteinGoal"
+                    min="1"
+                    step="1"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="carbsGoal">
+                    Carbohydrates (g)
+                </label>
+
+                <input
+                    type="number"
+                    id="carbsGoal"
+                    min="1"
+                    step="1"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="fatGoal">
+                    Fat (g)
+                </label>
+
+                <input
+                    type="number"
+                    id="fatGoal"
+                    min="1"
+                    step="1"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Save Goals
+            </button>
+
+            <p
+                id="settingsMessage"
+                class="form-message"
+                aria-live="polite"
+            ></p>
+
+        </form>
+
+    </section>
+
+
+    <!-- ==========================
+         DATA TOOLS
+    =========================== -->
+
+    <section class="card">
+
+        <h2>Data Tools</h2>
+
+        <p class="settings-warning">
+            These actions affect information saved in this browser.
+        </p>
+
+        <div class="settings-actions">
+
+            <button
+                type="button"
+                id="resetGoalsButton"
+                class="secondary-button"
+            >
+                Reset Goals
+            </button>
+
+            <button
+                type="button"
+                id="clearTodayButton"
+                class="danger-button"
+            >
+                Clear Today's Log
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ==========================
+     BOTTOM NAVIGATION
+========================== -->
+
+<nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav>
+
+
+<script src="js/storage.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
+const CACHE_NAME = 'day1-v2';
+const APP_FILES = ["./", "./settings.html", "./manifest.json", "./cardio.html", "./history.html", "./workouts.html", "./index.html", "./food-library.html", "./css/style.css", "./js/storage.js", "./js/foods.js", "./js/dashboard.js", "./js/history.js", "./js/training-store.js", "./js/workouts.js", "./js/cardio.js", "./js/app.js", "./js/settings.js", "./icons/apple-touch-icon.png", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/logo.svg"];
+self.addEventListener('install', event => {
+ event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_FILES)).then(()=>self.skipWaiting()));
+});
+self.addEventListener('activate', event => {
+ event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>(k.startsWith('macrotrack-')||k.startsWith('day1-'))&&k!==CACHE_NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+});
+self.addEventListener('fetch', event => {
+ if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
+ event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)));
+});
+
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0f172a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Day 1"><title>Workouts · Day 1</title><link rel="stylesheet" href="css/style.css"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="icon" href="icons/logo.svg"></head><body><main class="app"><header><div class="brand"><img class="brand-icon" src="icons/logo.svg" alt=""> Day 1</div><h1>Workouts</h1><p class="muted">Small steps. Stronger every day.</p></header><section class="card"><label for="routine">Your training day</label><select id="routine"><option value="workout1">Workout 1 · Bench press</option><option value="workout2">Workout 2 · Squat</option><option value="workout3">Workout 3 · Deadlift</option></select><label for="workoutDate">Workout date</label><input type="date" id="workoutDate" required><p class="muted helper">3 sets per exercise. Enter total barbell/machine weight, or weight per dumbbell. Use the same convention each time.</p><p id="workoutStatus" role="status"></p></section><section class="card" aria-labelledby="liftProgressHeading"><h2 id="liftProgressHeading">Focus lift progress</h2><p class="muted helper">Top sets are ranked by weight, then by reps at the same weight. Tap a lift to see every logged session.</p><div id="liftProgress"></div></section><form id="workoutForm"><div id="exercises"></div><section class="card"><label for="workoutNotes">Session notes (optional)</label><textarea id="workoutNotes" maxlength="2000" placeholder="How did today feel?"></textarea><button class="primary" type="submit">Finish workout</button><button class="secondary" type="button" id="discardWorkout">Discard current draft</button><p class="muted helper">Drafts save on this device as you type. Finish saves your session to history. Blank sets are skipped.</p></section></form><section class="card"><h2>Workout history</h2><div id="workoutHistory"></div></section></main><nav aria-label="Main navigation">
+<button id="dashboardButton"><div class="icon">⌂</div><div>Today</div></button>
+<button id="libraryButton"><div class="icon">＋</div><div>Food</div></button>
+<button id="workoutsButton"><div class="icon">🏋</div><div>Workouts</div></button>
+<button id="cardioButton"><div class="icon">♡</div><div>Cardio</div></button>
+<button id="historyButton"><div class="icon">↗</div><div>History</div></button>
+<button id="settingsButton"><div class="icon">⚙</div><div>Settings</div></button>
+</nav><script src="js/training-store.js"></script><script src="js/workouts.js"></script><script src="js/app.js"></script></body></html>
